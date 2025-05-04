@@ -10,7 +10,21 @@ WORKDIR /session-service
 RUN mvn package -DskipTests -Dpackaging.type=jar
 
 FROM eclipse-temurin:11
-# copy over target/session_service-x.y.z.jar ignore *-model.jar, that jar is
-# used by cbioportal/cbioportal to import the models
+
+RUN mkdir -p /tmp && chmod 777 /tmp
+
+# Add AWS DocumentDB certificate
+RUN curl -o /tmp/rds-combined-ca-bundle.pem https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem
+
+# Copy the built JAR file from the build stage
 COPY --from=build /session-service/target/*[0-9].jar /app.war
-CMD java ${JAVA_OPTS} -jar /app.war
+
+# Set default Java options for TLS
+# ENV JAVA_OPTS="-Djavax.net.ssl.trustStore=/tmp/rds-truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
+
+
+# Copy and set up startup script
+COPY startup.sh /
+RUN chmod +x /startup.sh
+
+ENTRYPOINT ["/startup.sh"]
