@@ -95,10 +95,6 @@ jobs:
         run: |
             docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-            
-            # Push image with both tags to avoid confussion while deploying services from cbioportal-devops
-            docker tag  $ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-            docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: "Docker image successfully pushed with tag: ${{ env.IMAGE_TAG }}"
         run: |
