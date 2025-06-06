@@ -33,8 +33,8 @@
 package org.cbioportal.session_service.service.internal;
 
 import java.util.List;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.bson.BSONException;
 import org.bson.json.JsonParseException;
 import org.cbioportal.session_service.domain.Session;
@@ -135,7 +135,7 @@ public class SessionServiceImpl implements SessionService {
 
     private String buildConstraintViolationExceptionMessage(ConstraintViolationException e) {
         StringBuffer errors = new StringBuffer();
-        for (ConstraintViolation violation : e.getConstraintViolations()) {
+        for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
             errors.append(violation.getMessage());
             errors.append(";");
         }
