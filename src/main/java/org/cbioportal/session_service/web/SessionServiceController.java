@@ -66,7 +66,7 @@ public class SessionServiceController {
     @Autowired
     private SessionService sessionService;
 
-    @RequestMapping(method = RequestMethod.POST, value="/{source}/{type}")
+    @RequestMapping(method = RequestMethod.POST, value={"/{source}/{type}", "/{source}/{type}/"})
     @JsonView(Session.Views.IdOnly.class)
     public Session addSession(@PathVariable String source, 
         @PathVariable SessionType type, 
@@ -74,14 +74,14 @@ public class SessionServiceController {
         return sessionService.addSession(source, type, data);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/{source}/{type}")
+    @RequestMapping(method = RequestMethod.GET, value={"/{source}/{type}", "/{source}/{type}/"})
     @JsonView(Session.Views.Full.class)
     public Iterable<Session> getSessions(@PathVariable String source, 
         @PathVariable SessionType type) {
         return sessionService.getSessions(source, type);
     }
     
-    @RequestMapping(method = RequestMethod.GET, value="/{source}/{type}/query")
+    @RequestMapping(method = RequestMethod.GET, value={"/{source}/{type}/query", "/{source}/{type}/query/"})
     @JsonView(Session.Views.Full.class)
     public Iterable<Session> getSessionsByQuery(@PathVariable String source, 
         @PathVariable SessionType type, 
@@ -91,7 +91,7 @@ public class SessionServiceController {
         return sessionService.getSessionsByQuery(source, type, query);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{source}/{type}/query/fetch")
+    @RequestMapping(method = RequestMethod.POST, value = {"/{source}/{type}/query/fetch", "/{source}/{type}/query/fetch/"})
     @JsonView(Session.Views.Full.class)
     public Iterable<Session> fetchSessionsByQuery(@PathVariable String source,
             @PathVariable SessionType type,
@@ -99,7 +99,7 @@ public class SessionServiceController {
         return sessionService.getSessionsByQuery(source, type, query);
     }
 
-    @RequestMapping(value = "/{source}/{type}/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = {"/{source}/{type}/{id}", "/{source}/{type}/{id}/"}, method = RequestMethod.GET)
     @JsonView(Session.Views.Full.class)
     public Session getSession(@PathVariable String source, 
         @PathVariable SessionType type,
@@ -107,7 +107,7 @@ public class SessionServiceController {
         return sessionService.getSession(source, type, id);
     }
 
-    @RequestMapping(value = "/{source}/{type}/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = {"/{source}/{type}/{id}", "/{source}/{type}/{id}/"}, method = RequestMethod.PUT)
     public void updateSession(@PathVariable String source, 
         @PathVariable SessionType type,
         @PathVariable String id, 
@@ -115,7 +115,7 @@ public class SessionServiceController {
         sessionService.updateSession(source, type, id, data);
     }
 
-    @RequestMapping(value = "/{source}/{type}/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/{source}/{type}/{id}", "/{source}/{type}/{id}/"}, method = RequestMethod.DELETE)
     public void deleteSession(@PathVariable String source, 
         @PathVariable SessionType type,
         @PathVariable String id) {
