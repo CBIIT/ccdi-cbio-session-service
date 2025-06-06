@@ -49,11 +49,12 @@ import org.springframework.http.*;
  */
 @SpringBootTest(
     classes = SessionService.class,
-    webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "server.error.include-exception=true",
-        "spring.mongodb.embedded.version=3.5.5",
-        "spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER"
+        "spring.data.mongodb.database=test",
+        "spring.data.mongodb.auto-index-creation=true",
+        "de.flapdoodle.mongodb.embedded.version=4.9.2"
     }
 )
 public class SessionServiceTest {
