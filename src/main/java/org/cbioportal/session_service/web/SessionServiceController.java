@@ -41,15 +41,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import io.swagger.annotations.ApiParam;
-
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,15 +59,14 @@ import java.util.stream.Stream;
  */
 @RestController // shorthand for @Controller, @ResponseBody
 @RequestMapping(value = "/api/sessions/")
-@EnableWebSecurity
-public class SessionServiceController  extends WebSecurityConfigurerAdapter {
+public class SessionServiceController {
     @Value("${security.basic.enabled:false}")
     private boolean securityEnabled;
 
     @Autowired
     private SessionService sessionService;
 
-    @RequestMapping(method = RequestMethod.POST, value="/{source}/{type}")
+    @RequestMapping(method = RequestMethod.POST, value={"/{source}/{type}", "/{source}/{type}/"})
     @JsonView(Session.Views.IdOnly.class)
     public Session addSession(@PathVariable String source, 
         @PathVariable SessionType type, 
@@ -77,14 +74,14 @@ public class SessionServiceController  extends WebSecurityConfigurerAdapter {
         return sessionService.addSession(source, type, data);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/{source}/{type}")
+    @RequestMapping(method = RequestMethod.GET, value={"/{source}/{type}", "/{source}/{type}/"})
     @JsonView(Session.Views.Full.class)
     public Iterable<Session> getSessions(@PathVariable String source, 
         @PathVariable SessionType type) {
         return sessionService.getSessions(source, type);
     }
     
-    @RequestMapping(method = RequestMethod.GET, value="/{source}/{type}/query")
+    @RequestMapping(method = RequestMethod.GET, value={"/{source}/{type}/query", "/{source}/{type}/query/"})
     @JsonView(Session.Views.Full.class)
     public Iterable<Session> getSessionsByQuery(@PathVariable String source, 
         @PathVariable SessionType type, 
@@ -94,16 +91,15 @@ public class SessionServiceController  extends WebSecurityConfigurerAdapter {
         return sessionService.getSessionsByQuery(source, type, query);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/{source}/{type}/query/fetch")
+    @RequestMapping(method = RequestMethod.POST, value = {"/{source}/{type}/query/fetch", "/{source}/{type}/query/fetch/"})
     @JsonView(Session.Views.Full.class)
     public Iterable<Session> fetchSessionsByQuery(@PathVariable String source,
             @PathVariable SessionType type,
-            @ApiParam(required = true, value = "selection filter similar to mongo filter")
             @RequestBody String query) {
         return sessionService.getSessionsByQuery(source, type, query);
     }
 
-    @RequestMapping(value = "/{source}/{type}/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = {"/{source}/{type}/{id}", "/{source}/{type}/{id}/"}, method = RequestMethod.GET)
     @JsonView(Session.Views.Full.class)
     public Session getSession(@PathVariable String source, 
         @PathVariable SessionType type,
@@ -111,7 +107,7 @@ public class SessionServiceController  extends WebSecurityConfigurerAdapter {
         return sessionService.getSession(source, type, id);
     }
 
-    @RequestMapping(value = "/{source}/{type}/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = {"/{source}/{type}/{id}", "/{source}/{type}/{id}/"}, method = RequestMethod.PUT)
     public void updateSession(@PathVariable String source, 
         @PathVariable SessionType type,
         @PathVariable String id, 
@@ -119,7 +115,7 @@ public class SessionServiceController  extends WebSecurityConfigurerAdapter {
         sessionService.updateSession(source, type, id, data);
     }
 
-    @RequestMapping(value = "/{source}/{type}/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = {"/{source}/{type}/{id}", "/{source}/{type}/{id}/"}, method = RequestMethod.DELETE)
     public void deleteSession(@PathVariable String source, 
         @PathVariable SessionType type,
         @PathVariable String id) {
@@ -153,22 +149,14 @@ public class SessionServiceController  extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        if (securityEnabled) {
-            http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/info").permitAll()
-                .anyRequest().authenticated()
-                .and().httpBasic();
-        } else {
-            http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/**")
-                .permitAll();
-
-        }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(authz -> authz
+                .requestMatchers("/api/sessions/**").permitAll()
+                .anyRequest().permitAll()
+            );
+        return http.build();
     }
 }

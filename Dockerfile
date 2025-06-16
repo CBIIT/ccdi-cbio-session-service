@@ -4,12 +4,12 @@
 # version 3, or (at your option) any later version.
 #
 
-FROM maven:3-eclipse-temurin-11 as build
-COPY $PWD /session-service
+FROM maven:3-eclipse-temurin-17 as build
+COPY . /session-service
 WORKDIR /session-service
 RUN mvn package -DskipTests -Dpackaging.type=jar
 
-FROM eclipse-temurin:11
+FROM eclipse-temurin:17
 
 RUN mkdir -p /tmp && chmod 777 /tmp
 
