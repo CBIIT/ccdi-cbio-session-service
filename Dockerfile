@@ -9,12 +9,12 @@ COPY . /session-service
 WORKDIR /session-service
 RUN mvn package -DskipTests -Dpackaging.type=jar
 
-FROM eclipse-temurin:17
+FROM eclipse-temurin:17-alpine AS fnl_base_image
 
 RUN mkdir -p /tmp && chmod 777 /tmp
 
 # Add AWS DocumentDB certificate
-RUN curl -o /tmp/rds-combined-ca-bundle.pem https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem
+RUN apk add curl && curl -o /tmp/rds-combined-ca-bundle.pem https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem
 
 # Copy the built JAR file from the build stage
 COPY --from=build /session-service/target/*[0-9].jar /app.war
