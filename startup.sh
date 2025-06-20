@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # filepath: startup.sh
 
 # Import the RDS cert into a truststore
