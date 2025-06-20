@@ -67,19 +67,19 @@
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-core</artifactId>
-      <version>11.0.7</version>
+      <version>11.0.8</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-el</artifactId>
-      <version>11.0.7</version>
+      <version>11.0.8</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.tomcat.embed</groupId>
       <artifactId>tomcat-embed-websocket</artifactId>
-      <version>11.0.7</version>
+      <version>11.0.8</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -127,10 +127,15 @@
       <artifactId>sentry-spring</artifactId>
       <version>6.25.0</version>
     </dependency>
+    <dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-web</artifactId>
+    <version>6.2.8</version>
+  </dependency>
   </dependencies>
    <properties>
         <java.version>17</java.version>
-        <tomcat.version>11.0.6</tomcat.version>
+        <tomcat.version>11.0.8</tomcat.version>
     </properties>
   <build>
     <plugins>
