@@ -15,7 +15,7 @@ FROM eclipse-temurin:21
 RUN mkdir -p /tmp && chmod 777 /tmp
 
 # Add AWS DocumentDB certificate
-RUN apk add curl && curl -o /tmp/rds-combined-ca-bundle.pem https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem
+RUN apt-get update && apt-get install -y curl && curl -o /tmp/rds-combined-ca-bundle.pem https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 # copy over target/session_service-x.y.z.jar ignore *-model.jar, that jar is
