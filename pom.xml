@@ -108,6 +108,19 @@
       <version>6.25.0</version>
     </dependency>
   </dependencies>
+  
+  <!-- Dependency management to fix security vulnerabilities -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- Fix CVE-2025-48924: Force commons-lang3 to version 3.18.0 or higher -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.18.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <properties>
     <java.version>21</java.version>
     <tomcat.version>10.1.42</tomcat.version>
