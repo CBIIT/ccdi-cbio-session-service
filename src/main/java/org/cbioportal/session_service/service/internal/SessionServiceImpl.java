@@ -135,7 +135,7 @@ public class SessionServiceImpl implements SessionService {
 
     private String buildConstraintViolationExceptionMessage(ConstraintViolationException e) {
         StringBuffer errors = new StringBuffer();
-        for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
             errors.append(violation.getMessage());
             errors.append(";");
         }
