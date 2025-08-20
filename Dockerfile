@@ -11,7 +11,7 @@ RUN mvn package -DskipTests -Dpackaging.type=jar
 
 # Use the latest patched version to address CVE-2025-50059 and other Java vulnerabilities
 
-FROM eclipse-temurin:21-alpine AS fnl_base_image
+FROM eclipse-temurin:21-ubi10-minimal AS fnl_base_image
 
 RUN mkdir -p /tmp && chmod 777 /tmp
 
