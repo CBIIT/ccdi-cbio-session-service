@@ -1,6 +1,9 @@
 #!/bin/sh
 # filepath: startup.sh
 
+# Set environment variables
+export APP_VERSION=${APP_VERSION}
+
 # Import the RDS cert into a truststore
 keytool -importcert -trustcacerts -alias rds-root -file /tmp/rds-combined-ca-bundle.pem  -keystore /tmp/rds-truststore.jks -storepass abcdef -noprompt
 
