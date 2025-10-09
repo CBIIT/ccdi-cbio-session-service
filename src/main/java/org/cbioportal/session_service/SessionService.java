@@ -67,14 +67,7 @@ public class SessionService extends SpringBootServletInitializer {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/info/**")
                         .allowedOriginPatterns("*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-                
-                // Also allow CORS for all API endpoints if needed
-                registry.addMapping("/api/**")
-                        .allowedOriginPatterns("*")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }
