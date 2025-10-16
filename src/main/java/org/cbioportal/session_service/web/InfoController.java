@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 public class InfoController {
 
     public String getVersion() {
+        // Read from environment variable, fallback to implementation version
+        String envVersion = System.getenv("APP_VERSION");
+        if (envVersion != null && !envVersion.trim().isBlank()) {
+            return envVersion;
+        }
         return getClass().getPackage().getImplementationVersion();
     }
 

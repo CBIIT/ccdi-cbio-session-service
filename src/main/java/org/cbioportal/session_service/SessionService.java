@@ -39,6 +39,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.core.mapping.event.ValidatingMongoEventListener;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 /**
@@ -56,6 +58,20 @@ public class SessionService extends SpringBootServletInitializer {
     @Bean
     public LocalValidatorFactoryBean validator() {
         return new LocalValidatorFactoryBean();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/info/**")
+                        .allowedOriginPatterns("*")
+                        .allowedMethods("GET", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
     }
 
     public static void main(String[] args) {
