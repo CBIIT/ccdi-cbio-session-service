@@ -136,12 +136,18 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+       <!-- Fix logback-core CVE -->
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>1.5.19</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   
   <properties>
     <java.version>21</java.version>
-    <tomcat.version>11.0.11</tomcat.version>
+    <tomcat.version>11.0.12</tomcat.version>
   <spring-framework.version>6.2.11</spring-framework.version>
   </properties>
   <build>
