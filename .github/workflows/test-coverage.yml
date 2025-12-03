@@ -28,7 +28,7 @@ jobs:
         cache: maven
     
     - name: Run tests with coverage
-      run: mvn test jacoco:report
+      run: mvn test
     
     - name: Coveralls GitHub Action
       uses: coverallsapp/github-action@v2
