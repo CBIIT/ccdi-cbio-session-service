@@ -4,7 +4,7 @@
 # version 3, or (at your option) any later version.
 #
 
-FROM maven:3-eclipse-temurin-21 as build
+FROM maven:3-eclipse-temurin-21 AS build
 COPY $PWD /session-service
 WORKDIR /session-service
 RUN mvn package -DskipTests -Dpackaging.type=jar
