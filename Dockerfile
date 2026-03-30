@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
 
 FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
 
-RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
+RUN apk update && apk upgrade --no-cache \
+    && apk add --no-cache --upgrade libpng \
+    && rm -rf /var/cache/apk/*
 
 RUN mkdir -p /tmp && chmod 777 /tmp
 
