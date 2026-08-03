@@ -156,6 +156,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- Fix CVE-2026-41695: unbounded property-path cache DoS (3.5.12+) -->
+      <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-commons</artifactId>
+        <version>3.5.12</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
   
