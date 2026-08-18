@@ -118,7 +118,7 @@
         <artifactId>commons-lang3</artifactId>
         <version>3.18.0</version>
       </dependency>
-      <!-- Force fixed Tomcat (covers core, websocket, el, jasper etc.). Fix CVE-2025-66614: client cert auth bypass (11.0.15+). Fix CVE-2026-24734: OCSP revocation bypass (11.0.18+). Fix CVE-2026-66299: WebSocket chat example DoS (11.0.25+). -->
+      <!-- Force fixed Tomcat versions. This block explicitly pins tomcat-embed-core and tomcat-embed-websocket; other Tomcat artifacts should also be kept aligned (e.g., via the tomcat.version property/Spring Boot dependency management). Fix CVE-2025-66614: client cert auth bypass (11.0.15+). Fix CVE-2026-24734: OCSP revocation bypass (11.0.18+). Fix CVE-2026-66299: WebSocket chat example DoS (11.0.25+). -->
       <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-core</artifactId>
