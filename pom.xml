@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.5.0</version>
+    <version>3.5.16</version>
   </parent>
   <profiles>
     <profile>
@@ -129,39 +129,41 @@
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${tomcat.version}</version>
       </dependency>
-      <!-- Fix CVE-2026-22732: servlet apps may not get security HTTP headers (CSP/HSTS/cache). Fixed in 6.5.9+. -->
+      <!-- Fix CVE-2026-22732: security HTTP headers (6.5.9+). Fix CVE-2026-47838: X.509 CN parsing / impersonation (6.5.11+). -->
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-bom</artifactId>
-        <version>6.5.9</version>
+        <version>6.5.11</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <!-- Fix CVE-2026-1225: logback arbitrary class instantiation via config (<= 1.5.24). Fixed in 1.5.25+. Keep logback-core and logback-classic on same version to avoid NoSuchMethodError (initCollisionMaps). -->
+      <!-- Fix CVE-2026-1225: logback config class instantiation (1.5.25+). Fix CVE-2026-9828: HardenedObjectInputStream whitelist bypass (1.5.33+). Keep logback-core and logback-classic on same version. -->
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-core</artifactId>
-        <version>1.5.25</version>
+        <version>1.5.35</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.5.25</version>
+        <version>1.5.35</version>
       </dependency>
       <!-- Fix GHSA-72hv-8253-57qq: jackson-core async parser DoS (maxNumberLength bypass) -->
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>2.21.1</version>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>2.21.5</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
   
   <properties>
     <java.version>21</java.version>
-    <tomcat.version>11.0.18</tomcat.version>
-    <!-- Fix CVE-2026-22737: path limitation bypass with script view templates (MVC/WebFlux). Fixed in 6.2.17+. -->
-    <spring-framework.version>6.2.17</spring-framework.version>
+    <tomcat.version>11.0.24</tomcat.version>
+    <!-- Fix CVE-2026-22737: path limitation bypass (6.2.17+). Fix CVE-2026-41851: SpEL unbounded cache DoS (6.2.19+). -->
+    <spring-framework.version>6.2.19</spring-framework.version>
   </properties>
   <build>
     <plugins>
