@@ -118,36 +118,6 @@
         <artifactId>commons-lang3</artifactId>
         <version>3.18.0</version>
       </dependency>
-      <!-- Force fixed Tomcat versions. This block explicitly pins tomcat-embed-core and tomcat-embed-websocket; other Tomcat artifacts should also be kept aligned (e.g., via the tomcat.version property/Spring Boot dependency management). Fix CVE-2025-66614: client cert auth bypass (11.0.15+). Fix CVE-2026-24734: OCSP revocation bypass (11.0.18+). Fix CVE-2026-66299: WebSocket chat example DoS (11.0.25+). -->
-      <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-core</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.tomcat.embed</groupId>
-        <artifactId>tomcat-embed-websocket</artifactId>
-        <version>${tomcat.version}</version>
-      </dependency>
-      <!-- Fix CVE-2026-22732: security HTTP headers (6.5.9+). Fix CVE-2026-47838: X.509 CN parsing / impersonation (6.5.11+). -->
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-bom</artifactId>
-        <version>6.5.11</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <!-- Fix CVE-2026-1225: logback config class instantiation (1.5.25+). Fix CVE-2026-9828: HardenedObjectInputStream whitelist bypass (1.5.33+). Keep logback-core and logback-classic on same version. -->
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-core</artifactId>
-        <version>1.5.35</version>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.5.35</version>
-      </dependency>
       <!-- Fix GHSA-72hv-8253-57qq: jackson-core async parser DoS (maxNumberLength bypass) -->
       <dependency>
         <groupId>com.fasterxml.jackson</groupId>
