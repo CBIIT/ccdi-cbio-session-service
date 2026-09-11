@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
     https://truststore.pki.rds.amazonaws.com/us-east-1/us-east-1-bundle.pem \
   && rm -rf /var/lib/apt/lists/*
 
-FROM eclipse-temurin:21-alpine-3.23 AS fnl_base_image
+FROM eclipse-temurin:21-alpine-3.24 AS fnl_base_image
 
 RUN apk update && apk upgrade --no-cache \
     && apk add --no-cache --upgrade libpng \
