@@ -37,25 +37,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import org.junit.*;
-import static org.junit.Assert.assertThat;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Manda Wilson 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
     classes = SessionService.class,
     webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
-        "server.error.include-exception=true",
+        "spring.web.error.include-exception=true",
+        "spring.web.error.include-message=always",
         "de.flapdoodle.mongodb.embedded.version=6.0.5",
         "spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER"
     }
@@ -69,14 +69,14 @@ public class SessionServiceTest {
     private URL base;
     private TestRestTemplate template;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/api/sessions/");
         template = new TestRestTemplate();
     }
 
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         // get all and delete them
         ResponseEntity<String> response = template.getForEntity(base.toString() + "msk_portal/main_session", String.class);

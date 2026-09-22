@@ -32,8 +32,10 @@
 
 package org.cbioportal.session_service.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -46,6 +48,7 @@ import org.springframework.util.DigestUtils;
  * @author Manda Wilson
  */
 @JsonInclude(Include.NON_NULL)
+@JsonPropertyOrder({ "id", "data", "source", "type" })
 public class Session {
     @Id
     private String id;
@@ -65,6 +68,7 @@ public class Session {
         return id;
     }
 
+    @JsonIgnore
     public String getChecksum() {
         return checksum;
     }

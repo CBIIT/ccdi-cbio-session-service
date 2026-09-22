@@ -7,7 +7,7 @@
 FROM maven:3-eclipse-temurin-21 AS build
 COPY $PWD /session-service
 WORKDIR /session-service
-RUN mvn package -DskipTests -Dpackaging.type=jar
+RUN mvn package -Dmaven.test.skip=true -Dpackaging.type=jar
 # Fetch RDS CA bundle in build stage so the runtime image does not need curl (CVE-2026-3805 etc.).
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
   && curl -fsSL -o /session-service/rds-combined-ca-bundle.pem \
