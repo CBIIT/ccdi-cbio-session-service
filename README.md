@@ -65,7 +65,7 @@ $ git clone https://github.com/cBioPortal/session-service.git
 
 $ cd session-service
 
-session-service$ mvn package -Dpackaging.type=jar && java -Dspring.data.mongodb.uri=mongodb://localhost:27017/session-service -jar target/session_service-0.1.0.jar 
+session-service$ mvn package -Dpackaging.type=jar && java -Dspring.mongodb.uri=mongodb://localhost:27017/session-service -jar target/session_service-0.1.0.jar 
 ```
 To generate war file with a configuration file:
 
@@ -107,7 +107,7 @@ By default the server runs on port 8080. This can be overridden by setting the
 process's SERVER_PORT environment variable.
 
 ```
-session-service$ export set SERVER_PORT=8090; mvn package -Dpackaging.type=jar && java -Dspring.data.mongodb.uri=mongodb://localhost:27017/session-service -jar target/session_service-0.1.0.jar
+session-service$ export set SERVER_PORT=8090; mvn package -Dpackaging.type=jar && java -Dspring.mongodb.uri=mongodb://localhost:27017/session-service -jar target/session_service-0.1.0.jar
 ```
 
 ## Sentry support
