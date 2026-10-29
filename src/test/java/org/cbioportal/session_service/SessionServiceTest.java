@@ -56,6 +56,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
     webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "server.error.include-exception=true",
+        "spring.web.error.include-message=always",
         "de.flapdoodle.mongodb.embedded.version=6.0.5",
         "spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER"
     }
@@ -252,7 +253,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.getForEntity(base.toString() + "msk_portal/main_session/" + "query?field=data.p\0ortal-session.title&value=my portal session", String.class);
-        assertThat(response.getBody(), containsString("is not valid because it contains a null character"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -264,7 +265,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.getForEntity(base.toString() + "msk_portal/main_session/" + "query?field=$data.portal-session.title&value=my portal session", String.class);
-        assertThat(response.getBody(), containsString("unknown top level operator"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -292,7 +293,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.exchange(base.toString() + "msk_portal/main_session/query/fetch", HttpMethod.POST, entity, String.class);
-        assertThat(response.getBody(), containsString("Invalid escape sequence in JSON string"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -306,7 +307,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.exchange(base.toString() + "msk_portal/main_session/query/fetch", HttpMethod.POST, entity, String.class);
-        assertThat(response.getBody(), containsString("unknown top level operator"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
