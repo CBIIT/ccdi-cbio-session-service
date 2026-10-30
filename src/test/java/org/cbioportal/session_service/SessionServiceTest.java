@@ -42,7 +42,7 @@ import org.junit.*;
 import static org.junit.Assert.assertThat;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -56,6 +56,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
     webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = {
         "server.error.include-exception=true",
+        "spring.web.error.include-message=always",
         "de.flapdoodle.mongodb.embedded.version=6.0.5",
         "spring.mvc.pathmatch.matching-strategy=ANT_PATH_MATCHER"
     }
@@ -135,7 +136,7 @@ public class SessionServiceTest {
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
        
         response = addData("msk_portal", "main_session", null); 
-        assertThat(response.getBody(), containsString("org.springframework.http.converter.HttpMessageNotReadableException"));
+        assertThat(response.getBody(), containsString("Required request body is missing"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -144,14 +145,14 @@ public class SessionServiceTest {
         ResponseEntity<String> response = addData("msk_portal", "main_session", "\"portal-session\":blah blah blah"); 
         System.out.println("&&&&&&&&&&");
         System.out.println(response);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionInvalidException"));
+        assertThat(response.getBody(), containsString("JSON reader was expecting a value"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
     @Test
     public void addSessionInvalidType() throws Exception {
         ResponseEntity<String> response = addData("msk_portal", "invalid_type", "\"portal-session\":\"blah blah blah\""); 
-        assertThat(response.getBody(), containsString("org.springframework.web.method.annotation.MethodArgumentTypeMismatchException"));
+        assertThat(response.getBody(), containsString("valid types are:"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -228,7 +229,7 @@ public class SessionServiceTest {
     @Test
     public void getSessionInvalidId() throws Exception {
         ResponseEntity<String> response = template.getForEntity(base.toString() + "msk_portal/main_session/" + "id", String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionNotFoundException"));
+        assertThat(response.getBody(), containsString("Session not found"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
     }
 
@@ -252,7 +253,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.getForEntity(base.toString() + "msk_portal/main_session/" + "query?field=data.p\0ortal-session.title&value=my portal session", String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionQueryInvalidException"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -264,7 +265,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.getForEntity(base.toString() + "msk_portal/main_session/" + "query?field=$data.portal-session.title&value=my portal session", String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionQueryInvalidException"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -292,7 +293,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.exchange(base.toString() + "msk_portal/main_session/query/fetch", HttpMethod.POST, entity, String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionQueryInvalidException"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -306,7 +307,7 @@ public class SessionServiceTest {
 
         // now query
         response = template.exchange(base.toString() + "msk_portal/main_session/query/fetch", HttpMethod.POST, entity, String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionQueryInvalidException"));
+        assertThat(response.getBody(), containsString("Invalid session query"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -349,7 +350,7 @@ public class SessionServiceTest {
 
         HttpEntity<String> entity = prepareData("\"portal-session\":blah blah blah");
         response = template.exchange(base.toString() + "msk_portal/main_session/" + id, HttpMethod.PUT, entity, String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionInvalidException"));
+        assertThat(response.getBody(), containsString("JSON reader was expecting a value"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -357,7 +358,7 @@ public class SessionServiceTest {
     public void updateSessionInvalidId() throws Exception {
         HttpEntity<String> entity = prepareData("\"portal-session\":\"my session information\"");
         ResponseEntity<String> response = template.exchange(base.toString() + "msk_portal/main_session/id", HttpMethod.PUT, entity, String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionNotFoundException"));
+        assertThat(response.getBody(), containsString("Session not found"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
     }
 
@@ -374,7 +375,7 @@ public class SessionServiceTest {
         HttpEntity<String> entity = prepareData(null);
         response = template.exchange(base.toString() + "msk_portal/main_session/" + id, HttpMethod.PUT, entity, String.class);
 
-        assertThat(response.getBody(), containsString("org.springframework.http.converter.HttpMessageNotReadableException"));
+        assertThat(response.getBody(), containsString("Required request body is missing"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
     }
 
@@ -400,14 +401,14 @@ public class SessionServiceTest {
 
         // confirm record is gone
         response = template.getForEntity(base.toString() + "msk_portal/main_session/" + id, String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionNotFoundException"));
+        assertThat(response.getBody(), containsString("Session not found"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
     }
 
     @Test
     public void deleteSessionInvalidId() throws Exception {
         ResponseEntity<String> response = template.exchange(base.toString() + "msk_portal/main_session/id", HttpMethod.DELETE, null, String.class);
-        assertThat(response.getBody(), containsString("org.cbioportal.session_service.service.exception.SessionNotFoundException"));
+        assertThat(response.getBody(), containsString("Session not found"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
     }
 
@@ -428,7 +429,7 @@ public class SessionServiceTest {
 
         // delete with different source
         response = template.exchange(base.toString() + "msk_portal/main_session/" + id, HttpMethod.DELETE, null, String.class);
-        assertThat(response.getBody(), containsString("SessionNotFoundException"));
+        assertThat(response.getBody(), containsString("Session not found"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_FOUND));
 
         // delete with correct source

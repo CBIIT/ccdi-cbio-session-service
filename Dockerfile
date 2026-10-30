@@ -5,7 +5,7 @@
 #
 
 FROM maven:3-eclipse-temurin-21 AS build
-COPY $PWD /session-service
+COPY . /session-service
 WORKDIR /session-service
 RUN mvn package -DskipTests -Dpackaging.type=jar
 # Fetch RDS CA bundle in build stage so the runtime image does not need curl (CVE-2026-3805 etc.).
@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
 FROM eclipse-temurin:21-alpine-3.24 AS fnl_base_image
 
 RUN apk update && apk upgrade --no-cache \
-    && apk add --no-cache --upgrade libpng \
+    && apk add --no-cache --upgrade libpng expat \
     && rm -rf /var/cache/apk/*
 
 RUN mkdir -p /tmp && chmod 777 /tmp

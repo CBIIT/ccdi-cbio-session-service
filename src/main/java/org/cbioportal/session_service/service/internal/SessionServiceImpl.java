@@ -47,12 +47,16 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.UncategorizedMongoDbException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Manda Wilson
  */
 @Service
 public class SessionServiceImpl implements SessionService {
+
+    private static final Logger log = LoggerFactory.getLogger(SessionServiceImpl.class);
 
     @Autowired
     private SessionRepository sessionRepository;
@@ -91,10 +95,9 @@ public class SessionServiceImpl implements SessionService {
         throws SessionQueryInvalidException {
         try {
             return sessionRepository.findBySourceAndTypeAndQuery(source, type, query);
-        } catch (IllegalArgumentException | JsonParseException | BSONException e) {
-            throw new SessionQueryInvalidException(e.getMessage());
-        } catch (UncategorizedMongoDbException e) {
-            throw new SessionQueryInvalidException(e.getMessage());
+        } catch (IllegalArgumentException | JsonParseException | BSONException | UncategorizedMongoDbException e) {
+            log.warn("Rejected invalid session query", e);
+            throw new SessionQueryInvalidException();
         }
     }
 
