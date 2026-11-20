@@ -11,5 +11,5 @@ keytool -importcert -trustcacerts -alias rds-root -file /tmp/rds-combined-ca-bun
 exec java ${JAVA_OPTS} \
     -Djavax.net.ssl.trustStore=/tmp/rds-truststore.jks \
     -Djavax.net.ssl.trustStorePassword=abcdef \
-    -Dspring.data.mongodb.uri=${MONGODB_URI} \
+    -Dspring.mongodb.uri=${MONGODB_URI} \
     -jar /app.war

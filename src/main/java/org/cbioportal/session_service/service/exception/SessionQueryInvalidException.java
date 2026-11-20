@@ -33,7 +33,7 @@
 package org.cbioportal.session_service.service.exception;
 
 public class SessionQueryInvalidException extends RuntimeException {
-    public SessionQueryInvalidException(String message) {
-        super(message);
-    }   
-}   
+    public SessionQueryInvalidException() {
+        super("Invalid session query");
+    }
+}
